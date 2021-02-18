@@ -102,7 +102,7 @@ export class GameTextAdapter {
             x < 1 ||
             x > this._game.boardSize.x ||
             y < 1 ||
-            y > this._game.boardSize.x
+            y > this._game.boardSize.y
         ) {
             throw new Error(
                 `The bombardier needs coordinates within the battle area! i.e. 1<x<=${this._game.boardSize.x}, 1<y<=${this._game.boardSize.y}`,
