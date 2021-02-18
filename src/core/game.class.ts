@@ -99,7 +99,13 @@ export class Game {
                 `Guesses for this game must be within the board bounds. 1<x<=${this.boardSize.x},1<y<=${this.boardSize.y}`,
             );
         }
+        // Use up one of the players guesses. This is rationalised in the fiction by likening guesses to bombs. 
+        // If incrementing movesMade was conditional on the cell being not-guessed, players could cheat by retrying
+        // already-guessed locations for free to see if they changed heat.
+        // This behaviour would occur to coordinates near a pair of close-proximity ships after one ship has been destroyed.
+        // As this grants additional information to the user, it should cost resources.
         this._movesMade++;
+
         if (this.isShip(x, y)) {
             this._boardState[x - 1][y - 1] = ETileState.HIT;
             this._shipPositions = this._shipPositions.filter(
