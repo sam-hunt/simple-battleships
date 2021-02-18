@@ -71,6 +71,10 @@ export class GameTextAdapter {
         );
 
         if (gameStatus === EGameStatus.VICTORY) {
+            this._gameTextCallback(
+                `The final board state is: \n` +
+                    this.prettyBoardState(this._game.foggedBoardState),
+            );
             this._gameTextCallback(`We are victorious commander!`);
             return;
         }
