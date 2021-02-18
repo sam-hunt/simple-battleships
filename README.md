@@ -43,6 +43,15 @@ $ npm run test
 $ npm run test:cov
 ```
 
+## Docker
+
+```bash
+# build
+docker build --tag=battleships-samhunt --target=deps|build|slim .
+
+# production mode
+docker run -i -t --rm --name=battleships-samhunt battleships-samhunt
+```
 
 ## Architecture
 
