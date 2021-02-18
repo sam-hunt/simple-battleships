@@ -13,7 +13,7 @@ export class GameTextAdapter {
         return this._game.gameStatus !== EGameStatus.IN_PROGRESS;
     }
 
-    public constructor(game: Game, gameTextCallback: (output: string) => any) {
+    public constructor(game: Game, gameTextCallback: (output: string) => any =  (output => null)) {
         this._game = game;
         this._gameTextCallback = gameTextCallback;
 
@@ -93,15 +93,22 @@ export class GameTextAdapter {
     }
 
     private parseInput(input: string): { x: number; y: number } {
-        // Syntax validation
-        if (!/\s*\d+\s*,\s*\d+\s*/.test(input)) {
+        this.validateInputSyntax(input);
+        const [x, y] = input.split(',').map((val) => parseInt(val.trim(), 10));
+        this.boundsCheck(x, y);
+        this.preventRepeatBombings(x, y);
+        return { x, y };
+    }
+
+    protected validateInputSyntax(input: string) {
+        if (!/^\s*\d+\s*,\s*\d+\s*$/.test(input)) {
             throw new Error(
                 `The bombardier needs integer x and y coordinates separated by a comma! e.g. 3,2`,
             );
         }
-        const [x, y] = input.split(',').map((val) => parseInt(val, 10));
-        // Semantic validation
-        // Check both coordinates are within board bounds
+    }
+
+    protected boundsCheck(x: number, y: number) {
         if (
             x < 1 ||
             x > this._game.boardSize.x ||
@@ -112,13 +119,14 @@ export class GameTextAdapter {
                 `The bombardier needs coordinates within the battle area! i.e. 1<x<=${this._game.boardSize.x}, 1<y<=${this._game.boardSize.y}`,
             );
         }
-        // Check we that cell hasn't already been bombed
+    }
+
+    protected preventRepeatBombings(x: number, y: number) {
         if (this._game.foggedBoardState[x-1][y-1] !== ETileState.FOGGED) {
             throw new Error(
                 `The bombardier has already bombed those coordinates!`,
             );
         }
-        return { x, y };
     }
 
     /**
