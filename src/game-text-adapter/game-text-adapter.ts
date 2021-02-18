@@ -109,7 +109,7 @@ export class GameTextAdapter {
             );
         }
         // Check we that cell hasn't already been bombed
-        if (this._game.foggedBoardState[x][y] !== ETileState.FOGGED) {
+        if (this._game.foggedBoardState[x-1][y-1] !== ETileState.FOGGED) {
             throw new Error(
                 `The bombardier has already bombed those coordinates!`,
             );
