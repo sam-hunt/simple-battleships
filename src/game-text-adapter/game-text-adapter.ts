@@ -129,11 +129,22 @@ export class GameTextAdapter {
 
     /**
      * Unlike its name, this function's internals will not be pretty as it needs flipping
+     *
+     * @todo This will need work to support pretty game boards with > single-digit bounds
      */
     private prettyBoardState(boardState: ETileState[][]): string {
-        let prettyBoardState = '';
+        // Print x axis labels first across top
+        let prettyBoardState = '  ';
+        for (let x = 0; x < boardState[0].length; x++) {
+            prettyBoardState += (x+1).toString() + ((x+1) < 9 ? ' ' : '');
+        }
+        prettyBoardState += '\n';
+        // Print each row
         for (let y = 0; y < boardState[0].length; y++) {
+            // Print y axis labels on the left of each row
+            prettyBoardState += (y+1).toString() + ((y+1) < 9 ? ' ' : '');
             for (let x = 0; x < boardState[0].length; x++) {
+                // Print the board state at the coordinates of each cell
                 prettyBoardState += boardState[x][y].toString() + ' ';
             }
             prettyBoardState += '\n';
